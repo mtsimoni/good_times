@@ -1,8 +1,6 @@
 extends KinematicBody2D
 
 var motion = Vector2(0,0)
-var lives = 3
-
 
 const SPEED = 1500
 const GRAVITY = 150
@@ -22,7 +20,7 @@ func _physics_process(delta):
 	
 func apply_gravity():
 	if position.y > WORLD_LIMIT:
-		end_game()
+		get_tree().call_group("GameState", "end_game")
 	if is_on_floor():
 		motion.y = 0
 	elif is_on_ceiling():
@@ -59,13 +57,8 @@ func hurt():
 	position.y -= 1
 	yield(get_tree(), "idle_frame")
 	motion.y -= JUMP_SPEED
-	lives -= 1
 	$AudioStreamPlayer2D.stream = load("res://assets/SFX/pain.ogg")
 	$AudioStreamPlayer2D.play()
-	if lives < 0:
-		end_game()
 
-func end_game():
-	get_tree().change_scene("res://levels/GameOver.tscn")
 	
 	
