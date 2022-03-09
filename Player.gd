@@ -3,11 +3,13 @@ extends KinematicBody2D
 var motion = Vector2(0,0)
 var lives = 3
 
+
 const SPEED = 1500
 const GRAVITY = 150
 const UP = Vector2(0,-1)
 const JUMP_SPEED = 3500
 const WORLD_LIMIT = 4000
+const BOOST_MULTIPLIER = 1.5
 
 signal animate
 
@@ -34,6 +36,11 @@ func jump():
 			motion.y -= JUMP_SPEED
 			$AudioStreamPlayer2D.stream = load("res://assets/SFX/jump1.ogg")
 			$AudioStreamPlayer2D.play()
+			
+func boost():
+	position.y -= 1
+	yield(get_tree(), "idle_frame")
+	motion.y -= JUMP_SPEED * BOOST_MULTIPLIER
 			
 func move():
 	if Input.is_action_pressed("left") and Input.is_action_pressed("right"):
